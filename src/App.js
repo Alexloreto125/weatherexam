@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import NavbarComponents from "./components/NavbarComponents";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Forecast from "./components/Forecast";
 
 function App() {
+  const [weather, setWeather] = useState({
+    icon: "https://openweathermap.org/img/wn/10d@2x.png",
+    temp: "10",
+    city: "Corea",
+    humidity: "20",
+    speed: "50",
+  });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="Container">
+      <NavbarComponents weather={weather} setWeather={setWeather} />
+      <Forecast title="Hourly Forecast" weather={weather} />
+      <Forecast title="Daily Forecast" weather={weather} />
     </div>
   );
 }
