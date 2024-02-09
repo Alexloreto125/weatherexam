@@ -34,7 +34,7 @@ const Forecast = ({ title, weather, units, selectedUnitText }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://api.openweathermap.org/data/2.5/forecast?q=${weather.city}&units=${units}&appid=a618d41fd67b6d6ea1d4eb93b15050af&lang=it`
+          `https://api.openweathermap.org/data/2.5/forecast?q=${weather.city}&units=${units}&appid=a618d41fd67b6d6ea1d4eb93b15050af&lang=it`
         );
         if (!response.ok) {
           throw new Error("Errore nella richiesta API");
