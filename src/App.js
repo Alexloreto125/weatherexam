@@ -12,11 +12,31 @@ function App() {
     humidity: "20",
     speed: "50",
   });
+  const [units, setUnits] = useState("metric");
+  const [selectedUnitText, setSelectedUnitText] = useState("°C");
+
+  const handleUnitChange = (newUnit) => {
+    setUnits(newUnit);
+    setSelectedUnitText(newUnit === "metric" ? "°C" : "°F");
+  };
   return (
     <div className="Container">
-      <NavbarComponents weather={weather} setWeather={setWeather} />
-      <Forecast title="Hourly Forecast" weather={weather} />
-      <Forecast title="Daily Forecast" weather={weather} />
+      <NavbarComponents
+        weather={weather}
+        setWeather={setWeather}
+        units={units}
+        setUnits={setUnits}
+        selectedUnitText={selectedUnitText}
+        setSelectedUnitText={setSelectedUnitText}
+        handleUnitChange={handleUnitChange}
+      />
+      <Forecast
+        title="Hourly Forecast"
+        weather={weather}
+        units={units}
+        selectedUnitText={selectedUnitText}
+      />
+      {/* <Forecast title="Daily Forecast" weather={weather} /> */}
     </div>
   );
 }

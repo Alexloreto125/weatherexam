@@ -4,9 +4,25 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const Forecast = ({ title, weather }) => {
+const Forecast = ({ title, weather, units, selectedUnitText }) => {
+  const formatDateTime = (dateTime) => {
+    const dateObj = new Date(dateTime);
+
+    const day = dateObj.getDate();
+    const month = dateObj.getMonth() + 1;
+    const hours = dateObj.getHours();
+    const minutes = dateObj.getMinutes();
+
+    const formattedDateTime = `${String(day).padStart(2, "0")}-${String(
+      month
+    ).padStart(2, "0")} ${String(hours).padStart(2, "0")}:${String(
+      minutes
+    ).padStart(2, "0")}`;
+
+    return formattedDateTime;
+  };
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 6,
@@ -18,14 +34,14 @@ const Forecast = ({ title, weather }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://api.openweathermap.org/data/2.5/forecast?q=${weather.city}&units=metric&appid=a618d41fd67b6d6ea1d4eb93b15050af&lang=it`
+          `http://api.openweathermap.org/data/2.5/forecast?q=${weather.city}&units=${units}&appid=a618d41fd67b6d6ea1d4eb93b15050af&lang=it`
         );
         if (!response.ok) {
           throw new Error("Errore nella richiesta API");
         }
 
         const data = await response.json();
-        console.log(data);
+        console.log("array", data);
 
         setDataW(
           data.list.map((item) => ({
@@ -41,7 +57,7 @@ const Forecast = ({ title, weather }) => {
     };
 
     fetchData();
-  }, [weather.city]);
+  }, [units, weather.city]);
 
   return (
     <Container style={{ maxWidth: "1080px" }}>
@@ -59,11 +75,13 @@ const Forecast = ({ title, weather }) => {
             >
               <Col>
                 <span>
-                  {weather.city} {data.time.slice(11, 16)}
+                  {weather.city} {formatDateTime(data.time)}
                 </span>
               </Col>
               <img src={data.icon} alt="logo" style={{ width: "50px" }} />
-              <h5>{data.temp} °C</h5>
+              <h5>
+                {data.temp} {selectedUnitText}
+              </h5>
             </Col>
           ))}
         </Slider>

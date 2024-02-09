@@ -13,7 +13,15 @@ import { FaLocationArrow } from "react-icons/fa6";
 //<FaLocationArrow />
 import "./style.css";
 
-const NavbarComponents = ({ weather, setWeather }) => {
+const NavbarComponents = ({
+  weather,
+  setWeather,
+  units,
+  setUnits,
+  selectedUnitText,
+  setSelectedUnitText,
+  handleUnitChange,
+}) => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   useEffect(() => {
@@ -46,7 +54,7 @@ const NavbarComponents = ({ weather, setWeather }) => {
     }
 
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=a618d41fd67b6d6ea1d4eb93b15050af&lang=it` //
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=a618d41fd67b6d6ea1d4eb93b15050af&lang=it` //
     )
       .then((response) => {
         if (response.ok) {
@@ -116,21 +124,25 @@ const NavbarComponents = ({ weather, setWeather }) => {
             </Button>{" "}
             <FormGroup className="d-flex align-items-center  ">
               <Button
+                type="submit"
                 style={{
                   backgroundColor: "transparent",
                   border: "none",
-                  color: "inherit",
+                  color: units === "metric" ? "inherit" : "gray",
                 }}
+                onClick={() => handleUnitChange("metric")}
               >
                 <RiCelsiusLine />
               </Button>{" "}
               |
               <Button
+                type="submit"
                 style={{
                   backgroundColor: "transparent",
                   border: "none",
-                  color: "inherit",
+                  color: units === "imperial" ? "inherit" : "gray",
                 }}
+                onClick={() => handleUnitChange("imperial")}
               >
                 <RiFahrenheitLine />
               </Button>{" "}
@@ -141,7 +153,9 @@ const NavbarComponents = ({ weather, setWeather }) => {
             {weather.city} : {currentDateTime.toLocaleString()}
           </p>
           <img src={weather.icon} alt="logo" />
-          <h1 className="display-4 fw-medium">{weather.temp}</h1>
+          <h1 className="display-4 fw-medium">
+            {weather.temp} {selectedUnitText}
+          </h1>
           <h1 className="mb-5">{weather.city}</h1>
         </Col>
         <Row className="mb-3">
